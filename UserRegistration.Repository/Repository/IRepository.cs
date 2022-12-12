@@ -19,6 +19,7 @@ namespace UserRegistration.Repository.Repository
         Task Update(T entity);
         Task Delete(object id);
         Task Save();
+
         //Task<Register> GetByCredentials(Usermodel um);
     }
 

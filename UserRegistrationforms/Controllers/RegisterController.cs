@@ -20,7 +20,7 @@ namespace UserRegistrationforms.Api.Controllers
             _registerService = registerService;
         }
 
-        [HttpGet("GetRegister")]
+        [HttpGet("GetAllRegister")]
         public async Task<ApiResponseModel> GetRegister()
         {
             return new ApiResponseModel(await _registerService.GetRegisterList());
@@ -89,6 +89,12 @@ namespace UserRegistrationforms.Api.Controllers
             {
                 return new ApiResponseModel(ex);
             }
+        }
+
+        [HttpGet("Login")]
+        public async Task<ApiResponseModel> Login(string userName, string password)
+        {
+            return new ApiResponseModel( _registerService.Login(userName, password));
         }
     }
 }

@@ -36,11 +36,12 @@ namespace UserRegistration.Service.Services
 
         public async Task<List<CityViewModel>> GetCityListByState(int stateId)
         {
-            IEnumerable<City> cityList = await _cityRepository.GetAll(x => stateId);
+            IEnumerable<City> cityList = await _cityRepository.GetAll(x => x.StateId == stateId);
             var cityViewModel = cityList.Select(x => new CityViewModel
             {
                 Id = x.Id,
-                CityName = x.CityName
+                CityName = x.CityName,
+                StateId = x.StateId
             });
             return cityViewModel.ToList();
         }
@@ -54,14 +55,14 @@ namespace UserRegistration.Service.Services
                 Id = x.Id,
                 Firstname = x.Firstname,
                 Lastname = x.Lastname,
-                City = x.City,
-                ConfirmPassword = x.ConfirmPassword,
                 Dob = x.Dob,
                 Email = x.Email,
                 Password = x.Password,
                 Mobile = x.Mobile,
-                Gender = x.Gender,
-                State = x.State,
+                GenderId = x.GenderId,
+                StateId = x.StateId,
+                CityId = x.CityId
+               
             });
 
             return registerViewModel.ToList();
@@ -73,15 +74,13 @@ namespace UserRegistration.Service.Services
             {
                 Firstname = registerViewModel.Firstname,
                 Lastname = registerViewModel.Lastname,
-                City = registerViewModel.City,
-                ConfirmPassword = registerViewModel.ConfirmPassword,
                 Dob = registerViewModel.Dob,
                 Email = registerViewModel.Email,
                 Password = registerViewModel.Password,
                 Mobile = registerViewModel.Mobile,
-                Gender = registerViewModel.Gender,
-                State = registerViewModel.State,
-               
+                GenderId = registerViewModel.GenderId,
+                StateId = registerViewModel.StateId,
+                CityId = registerViewModel.CityId
             };
 
             await _registerRepository.Add(register);
@@ -95,14 +94,13 @@ namespace UserRegistration.Service.Services
                 Id = register.Id,
                 Firstname = register.Firstname,
                 Lastname = register.Lastname,
-                City = register.City,
-                ConfirmPassword = register.ConfirmPassword,
                 Dob = register.Dob,
                 Email = register.Email,
                 Password = register.Password,
+                GenderId = register.GenderId,
                 Mobile = register.Mobile,
-                Gender = register.Gender,
-                State = register.State,
+                StateId = register.StateId,
+                CityId = register.CityId
             };
 
             return registerViewModel;
@@ -114,14 +112,13 @@ namespace UserRegistration.Service.Services
             {
                 register.Firstname = registerViewModel.Firstname;
                 register.Lastname = registerViewModel.Lastname;
-                register.Mobile = registerViewModel.Mobile;
                 register.Password = registerViewModel.Password;
-                register.ConfirmPassword = registerViewModel.ConfirmPassword;
-                register.City = registerViewModel.City;
                 register.Email = registerViewModel.Email;
-                register.State = registerViewModel.State;
                 register.Dob = registerViewModel.Dob;
-                register.Gender = registerViewModel.Gender;
+                register.GenderId = registerViewModel.GenderId;
+                register.Mobile = registerViewModel.Mobile;
+                register.StateId = registerViewModel.StateId;
+                register.CityId = registerViewModel.CityId;
             }
 
             await _registerRepository.Update(register);
@@ -131,5 +128,18 @@ namespace UserRegistration.Service.Services
             await _registerRepository.Delete(id);
 
         }
+
+        public bool Login(string userName, string password)
+        {
+            bool isExist = true;
+            Register register = _registerRepository.GetAll(x => x.Email == userName && x.Password == password).GetAwaiter().GetResult().FirstOrDefault();
+            if(register == null)
+            {
+                isExist = false;
+            }
+
+            return isExist;
+        }
+
     }
 }

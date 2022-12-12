@@ -15,6 +15,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 var services = builder.Services;
 
+builder.Services.AddCors(policyBuilder =>
+    policyBuilder.AddDefaultPolicy(policy =>
+        policy.WithOrigins("*").AllowAnyHeader().AllowAnyHeader())
+);
+
 services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 services.AddSwaggerGen(c =>
 {
@@ -35,9 +40,11 @@ services.AddDbContext<userregistration_Context>(Options =>
 services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 services.AddScoped(typeof(IRegisterService), typeof(RegisterService));
 
+
 services.AddMvc();
 
 var app = builder.Build();
+app.UseCors();
 
 if (app.Environment.IsDevelopment())
 {

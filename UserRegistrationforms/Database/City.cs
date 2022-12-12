@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace UserRegistration.Repository.Database
+namespace UserRegistrationforms.Api.Database
 {
     public partial class City
     {

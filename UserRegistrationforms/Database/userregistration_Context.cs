@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace UserRegistration.Repository.Database
+namespace UserRegistrationforms.Api.Database
 {
     public partial class userregistration_Context : DbContext
     {
@@ -17,7 +17,6 @@ namespace UserRegistration.Repository.Database
         }
 
         public virtual DbSet<City> Cities { get; set; }
-        public virtual DbSet<Gender> Genders { get; set; }
         public virtual DbSet<Register> Registers { get; set; }
         public virtual DbSet<State> States { get; set; }
 
@@ -37,17 +36,6 @@ namespace UserRegistration.Repository.Database
                     .HasConstraintName("FK__City__StateId__4BAC3F29");
             });
 
-            modelBuilder.Entity<Gender>(entity =>
-            {
-                entity.ToTable("Gender");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Name)
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
-            });
-
             modelBuilder.Entity<Register>(entity =>
             {
                 entity.ToTable("Register");
@@ -62,6 +50,10 @@ namespace UserRegistration.Repository.Database
 
                 entity.Property(e => e.Firstname)
                     .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Gender)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Lastname)
@@ -80,11 +72,6 @@ namespace UserRegistration.Repository.Database
                     .WithMany(p => p.Registers)
                     .HasForeignKey(d => d.CityId)
                     .HasConstraintName("FK__Register__CityId__5DCAEF64");
-
-                entity.HasOne(d => d.Gender)
-                    .WithMany(p => p.Registers)
-                    .HasForeignKey(d => d.GenderId)
-                    .HasConstraintName("FK__Register__Gender__6FE99F9F");
 
                 entity.HasOne(d => d.State)
                     .WithMany(p => p.Registers)
