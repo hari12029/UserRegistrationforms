@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using UserRegistration.Model.ViewModels;
 using UserRegistration.Repository.Database;
@@ -48,20 +47,23 @@ namespace UserRegistration.Service.Services
 
         public async Task<List<RegisterViewModel>> GetRegisterList()
         {
-            IEnumerable<Register> registerList = await _registerRepository.GetAll();
+            IEnumerable<Register> registerList = await _registerRepository.GetAll(x=> x.Gender, y=> y.State, z=>z.City);
 
             var registerViewModel = registerList.Select(x => new RegisterViewModel
             {
                 Id = x.Id,
                 Firstname = x.Firstname,
                 Lastname = x.Lastname,
-                Dob = x.Dob,
+                Dob = x.Dob?.ToString("yyyy/MM/dd"),
                 Email = x.Email,
                 Password = x.Password,
                 Mobile = x.Mobile,
-                GenderId = x.GenderId,
-                StateId = x.StateId,
-                CityId = x.CityId
+                Gender = x.Gender.Name,
+                State = x.State.StateName,
+                City = x.City.CityName,
+                //GenderId = x.GenderId,
+                //StateId = x.StateId,
+                //CityId = x.CityId
                
             });
 
@@ -74,7 +76,7 @@ namespace UserRegistration.Service.Services
             {
                 Firstname = registerViewModel.Firstname,
                 Lastname = registerViewModel.Lastname,
-                Dob = registerViewModel.Dob,
+                Dob = Convert.ToDateTime(registerViewModel.Dob),
                 Email = registerViewModel.Email,
                 Password = registerViewModel.Password,
                 Mobile = registerViewModel.Mobile,
@@ -94,7 +96,7 @@ namespace UserRegistration.Service.Services
                 Id = register.Id,
                 Firstname = register.Firstname,
                 Lastname = register.Lastname,
-                Dob = register.Dob,
+                Dob = register.Dob?.ToString("yyyy/MM/dd"),
                 Email = register.Email,
                 Password = register.Password,
                 GenderId = register.GenderId,
@@ -112,9 +114,8 @@ namespace UserRegistration.Service.Services
             {
                 register.Firstname = registerViewModel.Firstname;
                 register.Lastname = registerViewModel.Lastname;
-                register.Password = registerViewModel.Password;
                 register.Email = registerViewModel.Email;
-                register.Dob = registerViewModel.Dob;
+                register.Dob = Convert.ToDateTime(registerViewModel.Dob);
                 register.GenderId = registerViewModel.GenderId;
                 register.Mobile = registerViewModel.Mobile;
                 register.StateId = registerViewModel.StateId;

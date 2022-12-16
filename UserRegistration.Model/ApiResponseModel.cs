@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UserRegistration.Model
 {
-    
-        public class ApiResponseModel
+
+    public class ApiResponseModel
         {
             public dynamic Data { get; set; }
             public Exception Exception { get; set; }

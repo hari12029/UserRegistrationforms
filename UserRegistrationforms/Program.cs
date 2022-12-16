@@ -57,13 +57,12 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-//app.UseCors(options => options.AllowAnyOrigin());
-// global cors policy
+
 app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader()
-    .SetIsOriginAllowed(origin => true) // allow any origin
-    .AllowCredentials()); // allow credentials
+    .SetIsOriginAllowed(origin => true) 
+    .AllowCredentials()); 
 
 app.UseAuthorization();
 
