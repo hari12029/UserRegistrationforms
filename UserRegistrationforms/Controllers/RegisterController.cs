@@ -76,7 +76,7 @@ namespace UserRegistrationforms.Api.Controllers
             }
         }
    
-        [HttpDelete]
+        [HttpDelete("DeleteRegister")]
         public async Task<ApiResponseModel> DeleteRegister(int id)
         {
 

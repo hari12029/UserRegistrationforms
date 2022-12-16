@@ -17,7 +17,7 @@ var services = builder.Services;
 
 builder.Services.AddCors(policyBuilder =>
     policyBuilder.AddDefaultPolicy(policy =>
-        policy.WithOrigins("*").AllowAnyHeader().AllowAnyHeader())
+        policy.WithOrigins("*,http://127.0.0.1:5500").AllowAnyHeader().AllowAnyHeader())
 );
 
 services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -44,7 +44,6 @@ services.AddScoped(typeof(IRegisterService), typeof(RegisterService));
 services.AddMvc();
 
 var app = builder.Build();
-app.UseCors();
 
 if (app.Environment.IsDevelopment())
 {
@@ -57,6 +56,14 @@ app.UseAuthentication();
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+//app.UseCors(options => options.AllowAnyOrigin());
+// global cors policy
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // allow any origin
+    .AllowCredentials()); // allow credentials
 
 app.UseAuthorization();
 

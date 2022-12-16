@@ -71,7 +71,8 @@ namespace UserRegistration.Repository.Repository
         public async Task Delete(object id)
         {
             T existing = await entities.FindAsync(id);
-            entities.Remove(existing);
+            if(existing!=null)
+               entities.Remove(existing);
             await Save();
         }
 
